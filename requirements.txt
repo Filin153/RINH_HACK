@@ -1,0 +1,14 @@
+fastapi[all]
+python-multipart
+python-jose
+passlib
+bcrypt
+sqlalchemy
+PyJWT
+psycopg2
+python-dotenv
+asyncpg
+alembic
+gunicorn
+paramiko
+pandas

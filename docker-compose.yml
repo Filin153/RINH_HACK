@@ -1,0 +1,59 @@
+version: "3.8"
+
+services:
+  api:
+    image: gusgus153/server_control_api
+    build: .
+    container_name: server_control_api
+    depends_on:
+      - db
+    restart: always
+    ports:
+      - 9898:9898
+    environment:
+      - TZ=Europe/Moscow
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${DB_NAME}
+    # ports:
+    #   - 5432:5432
+    volumes:
+    - db:/db/volumes
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 7890:8080
+    volumes:
+    - adminer:/adminer/volumes
+    environment:
+      - TZ=Europe/Moscow
+
+  alembic:
+    image: gusgus153/server_control_alembic
+    container_name: server_control_alembic
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+      - api
+    restart: on-failure
+    volumes:
+      - .:/app
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:5432/healthcheck" ]
+      interval: 5s
+      timeout: 10s
+      retries: 3
+    command: [ "alembic", "upgrade", "head" ]
+
+volumes:
+  db:
+  adminer:
+  alembic:
