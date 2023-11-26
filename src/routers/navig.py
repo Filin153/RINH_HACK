@@ -3,8 +3,6 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.models import get_async_session
-from src.routers.auth.router import verify
 from src.routers.server.controllers import get_all_user_server, get_docker_containers, make_docker_df, \
     get_running_vm_info_windows, get_running_vm_info_linux
 import jwt
