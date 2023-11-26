@@ -22,7 +22,7 @@ async def get_vm_conteiners(servername: str, db: AsyncSession = Depends(get_asyn
             res = get_running_vm_info_windows(server.ip, server.user, server.password)
         return res
     except:
-        raise HTTPException(status_code=400, detail="ВМ необнаруженно")
+        raise HTTPException(status_code=400, detail="ВМ необнаруженно ")
 
 
 @router.post("/stop/{id}")

@@ -35,3 +35,4 @@ async def add_server(db: AsyncSession = Depends(get_async_session),
     return cont
 
 
+
