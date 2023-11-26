@@ -5,7 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.models import get_async_session
 from src.routers.auth.router import verify
-from src.routers.server.controllers import get_all_user_server, get_docker_containers, make_docker_df
+from src.routers.server.controllers import get_all_user_server, get_docker_containers, make_docker_df, \
+    get_running_vm_info_windows, get_running_vm_info_linux
 
 router = APIRouter(
     tags=['Navig'],
@@ -18,12 +19,30 @@ tmp = Jinja2Templates(directory="src/static")
 async def index(request: Request):
     return tmp.TemplateResponse("index.html", {"request": request})
 
+
 @router.get("/main", response_class=HTMLResponse)
-async def index(request: Request, db: AsyncSession = Depends(get_async_session)):
-    cont = await get_all_user_server(db, 17)
+async def index(request: Request, db: AsyncSession = Depends(get_async_session),
+                user_data=Depends(verify)):
+    cont = await get_all_user_server(db, user_data['id'])
     docker_data = []
+    win_data = []
+    linux_data = []
     for i in cont:
-        docker_data.append({"server": i.name, "data": get_docker_containers(i.ip, i.user, i.password)})
-    print(docker_data)
-    context = {"request": request, "username": "user_data['login']", "docker_data": docker_data}
+        try:
+            docker_data.append({"server": i.name, "data": get_docker_containers(i.ip, i.user, i.password)})
+        except:
+            pass
+        try:
+            win_data.append({"server": i.name, "data": get_running_vm_info_windows(i.ip, i.user, i.password)})
+        except:
+            pass
+        try:
+            linux_data.append({"server": i.name, "data": get_running_vm_info_linux(i.ip, i.user, i.password)})
+        except:
+            pass
+
+    context = {"request": request, "username": "user_data['login']",
+               "docker_data": docker_data,
+               "win_data": win_data,
+               "linux_data": linux_data}
     return tmp.TemplateResponse("main.html", context)

@@ -20,4 +20,3 @@ passInput.addEventListener("blur", function() {
 		this.placeholder = "Пароль";
 	}
 });
-

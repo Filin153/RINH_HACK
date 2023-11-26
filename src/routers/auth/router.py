@@ -32,7 +32,7 @@ async def verify(request: Request, db: AsyncSession = Depends(get_async_session)
 
 
 @router.get("/get", response_model=list[UserModel])
-async def read_moders(skip: int = 0, limit: int = 100, db: AsyncSession = Depends(get_async_session),
+async def read_users(skip: int = 0, limit: int = 100, db: AsyncSession = Depends(get_async_session),
                       user_data=Depends(verify)):
     users = await get_user(db, skip=skip, limit=limit)
     await db.close()
@@ -40,7 +40,7 @@ async def read_moders(skip: int = 0, limit: int = 100, db: AsyncSession = Depend
 
 
 @router.get("/getone")
-async def read_moder(login: str, db: AsyncSession = Depends(get_async_session),
+async def read_user(login: str, db: AsyncSession = Depends(get_async_session),
                      user_data=Depends(verify)):
     user = await get_one_user(db, login=login)
     await db.close()
@@ -48,7 +48,7 @@ async def read_moder(login: str, db: AsyncSession = Depends(get_async_session),
 
 
 @router.post("/add")
-async def add_moders(user_data: UserCreate,
+async def add_users(user_data: UserCreate,
                      db: AsyncSession = Depends(get_async_session)):
     try:
         new_user = User(**user_data.dict())

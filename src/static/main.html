@@ -40,7 +40,7 @@
 					</div>
 					<div class="server__virtual">
 						<div class="virtual__virtual-machine">
-							<div class="virtual-machine__title">VirtualMachine:</div>
+							<div class="virtual-machine__title">Docker:</div>
 							{% for data in container.data %}
 							<div class="virtual-machine__body">
 								<div class="virtual-machine__content">
@@ -59,6 +59,94 @@
 										id - {{ data[0] }}<br>
 										Состояние - {{ data[4] }}<br>
 										Образ - {{ data[1] }}<br>
+									</div>
+									<div class="content__remove">
+										<div></div>
+									</div>
+								</div>
+							</div>
+							{% endfor %}
+					</div>
+				</section>
+				{% endfor %}
+				{% for container in linux_data %}
+				<section class="server">
+					<div class="server__header">
+						<div class="server__header-title-spisok">
+							<div class="server__header-title">
+								{{ container.server }}
+							</div>
+							<img src="src/static/img/Polygon.png" alt="spisok" class="server__header-img">
+						</div>
+						<div class="server__header-remove" id="server__remove">
+							<div></div>
+						</div>
+					</div>
+					<div class="server__virtual">
+						<div class="virtual__virtual-machine">
+							<div class="virtual-machine__title">VM linux server:</div>
+							{% for data in container.data %}
+							<div class="virtual-machine__body">
+								<div class="virtual-machine__content">
+									<div class="content__title-switch">
+										<div class="content__title">{{ data[1] }}</div>
+										<label class="content__switch">
+											{% if data[3] %}
+												<input type="checkbox" id="toggle" checked>
+											{% else %}
+												<input type="checkbox" id="toggle">
+											{% endif %}
+											<span class="slider round"></span>
+										</label>
+									</div>
+									<div class="content__description">
+										id - {{ data[0] }}<br>
+										Состояние - {{ data[2] }}<br>
+									</div>
+									<div class="content__remove">
+										<div></div>
+									</div>
+								</div>
+							</div>
+							{% endfor %}
+					</div>
+				</section>
+				{% endfor %}
+				{% for container in win_data %}
+				<section class="server">
+					<div class="server__header">
+						<div class="server__header-title-spisok">
+							<div class="server__header-title">
+								{{ container.server }}
+							</div>
+							<img src="src/static/img/Polygon.png" alt="spisok" class="server__header-img">
+						</div>
+						<div class="server__header-remove" id="server__remove">
+							<div></div>
+						</div>
+					</div>
+					<div class="server__virtual">
+						<div class="virtual__virtual-machine">
+							<div class="virtual-machine__title">VM win server:</div>
+							{% for data in container.data %}
+							<div class="virtual-machine__body">
+								<div class="virtual-machine__content">
+									<div class="content__title-switch">
+										<div class="content__title">{{ data[0] }}</div>
+										<label class="content__switch">
+											{% if data[7] %}
+												<input type="checkbox" id="toggle" checked>
+											{% else %}
+												<input type="checkbox" id="toggle">
+											{% endif %}
+											<span class="slider round"></span>
+										</label>
+									</div>
+									<div class="content__description">
+										Состояние - {{ data[1] }}<br>
+										CPU Usage - {{ data[2] }}<br>
+										Время работы - {{ data[4] }}<br>
+										Статус - {{ data[5] }}<br>
 									</div>
 									<div class="content__remove">
 										<div></div>
