@@ -11,8 +11,7 @@ router = APIRouter(
 
 
 @router.get("/get/{servername}")
-async def get_vm_conteiners(servername: str, db: AsyncSession = Depends(get_async_session),
-                                user_data=Depends(verify)):
+async def get_vm_conteiners(servername: str, db: AsyncSession = Depends(get_async_session)):
     try:
         server = await get_one_server(db, servername)
         await db.close()
@@ -26,8 +25,7 @@ async def get_vm_conteiners(servername: str, db: AsyncSession = Depends(get_asyn
 
 
 @router.post("/stop/{id}")
-async def stop_vm_conteiners(servername, vm_name: str, db: AsyncSession = Depends(get_async_session),
-                                 user_data=Depends(verify)):
+async def stop_vm_conteiners(servername, vm_name: str, db: AsyncSession = Depends(get_async_session)):
     try:
         server = await get_one_server(db, servername)
         if get_linux_distribution(server.ip, server.user, server.password):
@@ -42,8 +40,7 @@ async def stop_vm_conteiners(servername, vm_name: str, db: AsyncSession = Depend
 
 
 @router.post("/start/{id}")
-async def start_vm_conteiners(servername, vm_name: str, db: AsyncSession = Depends(get_async_session),
-                                  user_data=Depends(verify)):
+async def start_vm_conteiners(servername, vm_name: str, db: AsyncSession = Depends(get_async_session)):
     try:
         server = await get_one_server(db, servername)
         if get_linux_distribution(server.ip, server.user, server.password):

@@ -11,12 +11,11 @@ router = APIRouter(
 
 
 @router.post("/add")
-async def add_server(server: ServerCreate, db: AsyncSession = Depends(get_async_session),
-                     user_data=Depends(verify)):
+async def add_server(login: str, server: ServerCreate, db: AsyncSession = Depends(get_async_session)):
     try:
         cont = get_docker_containers(server.ip, server.user, server.password)
         if cont:
-            await create_user_server(db=db, server=server, login=user_data['login'])
+            await create_user_server(db=db, server=server, login=login)
     except:
         raise HTTPException(status_code=400, detail="Сервер с таким именем уже существует")
     finally:

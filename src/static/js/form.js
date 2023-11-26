@@ -29,21 +29,21 @@ loginButton.addEventListener("click", (e) => {
     const username = document.getElementById('usernameInput').value;
     const password = document.getElementById('passwordInput').value;
 
-    fetch("http://localhost:8000/user/add", {
-        method: "POST",
+    const url = `http://localhost:8000/user/getone?login=${username}&password=${password}`;
+
+    fetch(url, {
+        method: "GET",
         headers: {
             "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            login: username,
-            password: password
-        })
+        }
     })
     .then(response => response.json())
     .then(data => {
         const token = data.token;
-        localStorage.setItem("token", token);
-        window.location.href = `/main/${token}`;
+        if (token !== '' && token !== undefined) {
+            localStorage.setItem("token", token);
+            window.location.href = `/main/${token}`;
+        }
     })
     .catch(error => {
         console.error("Error:", error);

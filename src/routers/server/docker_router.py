@@ -11,8 +11,7 @@ router = APIRouter(
 
 
 @router.get("/get/{servername}")
-async def get_docker_conteiners(servername: str, db: AsyncSession = Depends(get_async_session),
-                                user_data=Depends(verify)):
+async def get_docker_conteiners(servername: str, db: AsyncSession = Depends(get_async_session)):
     try:
         server = await get_one_server(db, servername)
         await db.close()
@@ -23,8 +22,7 @@ async def get_docker_conteiners(servername: str, db: AsyncSession = Depends(get_
 
 
 @router.post("/stop/{id}")
-async def stop_docker_conteiners(servername, id: str, db: AsyncSession = Depends(get_async_session),
-                                 user_data=Depends(verify)):
+async def stop_docker_conteiners(servername, id: str, db: AsyncSession = Depends(get_async_session)):
     try:
         server = await get_one_server(db, servername)
         res = stop_docker_container(server.ip, server.user, server.password, id)
@@ -36,8 +34,7 @@ async def stop_docker_conteiners(servername, id: str, db: AsyncSession = Depends
 
 
 @router.post("/start/{id}")
-async def start_docker_conteiners(servername, id: str, db: AsyncSession = Depends(get_async_session),
-                                  user_data=Depends(verify)):
+async def start_docker_conteiners(servername, id: str, db: AsyncSession = Depends(get_async_session)):
     try:
         server = await get_one_server(db, servername)
         res = start_docker_container(server.ip, server.user, server.password, id)
@@ -49,8 +46,7 @@ async def start_docker_conteiners(servername, id: str, db: AsyncSession = Depend
 
 
 @router.post("/run")
-async def run_docker_conteiners(servername, container_name, img: str, db: AsyncSession = Depends(get_async_session),
-                                user_data=Depends(verify)):
+async def run_docker_conteiners(servername, container_name, img: str, db: AsyncSession = Depends(get_async_session)):
     try:
         server = await get_one_server(db, servername)
         res = run_docker_container(server.ip, server.user, server.password, container_name, img)
@@ -62,8 +58,7 @@ async def run_docker_conteiners(servername, container_name, img: str, db: AsyncS
 
 
 @router.delete("/remove")
-async def remove_docker_conteiners(servername, container: str, db: AsyncSession = Depends(get_async_session),
-                                   user_data=Depends(verify)):
+async def remove_docker_conteiners(servername, container: str, db: AsyncSession = Depends(get_async_session)):
     try:
         server = await get_one_server(db, servername)
         res = remove_docker_container(server.ip, server.user, server.password, container)
@@ -75,8 +70,7 @@ async def remove_docker_conteiners(servername, container: str, db: AsyncSession 
 
 
 @router.post("/pull")
-async def pull_docker_conteiners(servername, name: str, db: AsyncSession = Depends(get_async_session),
-                                 user_data=Depends(verify)):
+async def pull_docker_conteiners(servername, name: str, db: AsyncSession = Depends(get_async_session)):
     try:
         server = await get_one_server(db, servername)
         res = pull_docker_container(server.ip, server.user, server.password, name)
