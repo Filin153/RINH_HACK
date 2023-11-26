@@ -7,6 +7,11 @@ from src.models import get_async_session
 from src.routers.auth.router import verify
 from src.routers.server.controllers import get_all_user_server, get_docker_containers, make_docker_df, \
     get_running_vm_info_windows, get_running_vm_info_linux
+import jwt
+from src.models.database import get_async_session
+from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import Depends, APIRouter, HTTPException, Request
+from config import SECRET_KEY, ALGORITHM
 
 router = APIRouter(
     tags=['Navig'],
@@ -20,9 +25,10 @@ async def index(request: Request):
     return tmp.TemplateResponse("index.html", {"request": request})
 
 
-@router.get("/main", response_class=HTMLResponse)
-async def index(request: Request, db: AsyncSession = Depends(get_async_session),
-                user_data=Depends(verify)):
+@router.get("/main/{token}", response_class=HTMLResponse)
+async def index(token: str, request: Request, db: AsyncSession = Depends(get_async_session)):
+    print(token)
+    user_data = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
     cont = await get_all_user_server(db, user_data['id'])
     docker_data = []
     win_data = []
@@ -41,7 +47,7 @@ async def index(request: Request, db: AsyncSession = Depends(get_async_session),
         except:
             pass
 
-    context = {"request": request, "username": "user_data['login']",
+    context = {"request": request, "username": user_data['login'],
                "docker_data": docker_data,
                "win_data": win_data,
                "linux_data": linux_data}

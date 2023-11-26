@@ -14,6 +14,7 @@ router = APIRouter(
 
 async def verify(request: Request, db: AsyncSession = Depends(get_async_session)):
     token = request.headers.get('token')
+    print(token)
     if not token:
         raise HTTPException(status_code=401, detail="Требуется токен для доступа")
 
@@ -55,6 +56,6 @@ async def add_users(user_data: UserCreate,
         await add_user(db, user=new_user)
         await db.close()
         json_data = {"login": user_data.login, "password": user_data.password, "id": new_user.id}
-        return jwt.encode(json_data, SECRET_KEY, ALGORITHM)
+        return {"token": jwt.encode(json_data, SECRET_KEY, ALGORITHM)}
     except Exception:
         raise HTTPException(status_code=409, detail="allready exists")

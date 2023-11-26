@@ -35,15 +35,15 @@ loginButton.addEventListener("click", (e) => {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            username: username,
+            login: username,
             password: password
         })
     })
     .then(response => response.json())
     .then(data => {
-        localStorage.setItem("token", data.token);
-
-        window.location.href = "/main";
+        const token = data.token;
+        localStorage.setItem("token", token);
+        window.location.href = `/main/${token}`;
     })
     .catch(error => {
         console.error("Error:", error);
