@@ -16,7 +16,7 @@
 					<a href=""><img src="src/static/img/logo.png" alt="logo"></a>
 				</div>
 				<div class="header__user">
-					UserName
+					{{ username }}
 				</div>
 				<button class="header__button">
 					Выход
@@ -25,11 +25,12 @@
 		</header>
 		<main class="main">
 			<div class="main__container __container">
+				{% for container in docker_data %}
 				<section class="server">
 					<div class="server__header">
 						<div class="server__header-title-spisok">
 							<div class="server__header-title">
-								Сервер 1
+								{{ container.server }}
 							</div>
 							<img src="src/static/img/Polygon.png" alt="spisok" class="server__header-img">
 						</div>
@@ -40,116 +41,34 @@
 					<div class="server__virtual">
 						<div class="virtual__virtual-machine">
 							<div class="virtual-machine__title">VirtualMachine:</div>
+							{% for data in container.data %}
 							<div class="virtual-machine__body">
 								<div class="virtual-machine__content">
 									<div class="content__title-switch">
-										<div class="content__title">LinuxMach</div>
+										<div class="content__title">{{ data[6] }}</div>
 										<label class="content__switch">
-											<input type="checkbox" id="toggle">
+											{% if data[7] %}
+												<input type="checkbox" id="toggle" checked>
+											{% else %}
+												<input type="checkbox" id="toggle">
+											{% endif %}
 											<span class="slider round"></span>
 										</label>
 									</div>
 									<div class="content__description">
-										Краткое описание машины
+										id - {{ data[0] }}<br>
+										Состояние - {{ data[4] }}<br>
+										Образ - {{ data[1] }}<br>
 									</div>
 									<div class="content__remove">
 										<div></div>
 									</div>
 								</div>
 							</div>
-							<div class="virtual-machine__body">
-								<div class="virtual-machine__content">
-									<div class="content__title-switch">
-										<div class="content__title">LinuxMach</div>
-										<label class="content__switch">
-											<input type="checkbox" id="toggle">
-											<span class="slider round"></span>
-										</label>
-									</div>
-									<div class="content__description">
-										Краткое описание машины
-									</div>
-									<div class="content__remove">
-										<div></div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="virtual__virtual-machine">
-							<div class="virtual-machine__title">DockerContainer:</div>
-							<div class="virtual-machine__body">
-								<div class="virtual-machine__content">
-									<div class="content__title-switch">
-										<div class="content__title">LinuxMach</div>
-										<label class="content__switch">
-											<input type="checkbox" id="toggle">
-											<span class="slider round"></span>
-										</label>
-									</div>
-									<div class="content__description">
-										Краткое описание машины
-									</div>
-									<div class="content__remove">
-										<div></div>
-									</div>
-								</div>
-							</div>
-							<div class="virtual-machine__body">
-								<div class="virtual-machine__content">
-									<div class="content__title-switch">
-										<div class="content__title">LinuxMach</div>
-										<label class="content__switch">
-											<input type="checkbox" id="toggle">
-											<span class="slider round"></span>
-										</label>
-									</div>
-									<div class="content__description">
-										Краткое описание машины
-									</div>
-									<div class="content__remove">
-										<div></div>
-									</div>
-								</div>
-							</div>
-						</div>
+							{% endfor %}
 					</div>
 				</section>
-				<section class="server">
-					<div class="server__header">
-						<div class="server__header-title-spisok">
-							<div class="server__header-title">
-								Сервер 2
-							</div>
-							<img src="src/static/img/Polygon.png" alt="spisok" class="server__header-img">
-						</div>
-						<div class="server__header-remove" id="server__remove">
-							<div></div>
-						</div>
-					</div>
-					<div class="server__virtual"></div>
-				</section>
-				<div class="main__button">
-					<button class="button__add">
-						<div class="button__add-plus"></div>
-					</button>
-				</div>
-				<div class="modal__add" id="modal">
-					<div class="modal__content">
-						<div class="close">
-							<div class="modal__content-close"></div>
-						</div>
-						<form action="" class="modal__content-form" method="post">
-							<div class="modal__content-form-title">Добавьте сервер</div>
-							<input class="input__name input" type="text" placeholder="Name">
-							<input class="input__port input" type="text" placeholder="Port">
-							<input class="input__ip input" type="text" placeholder="IP">
-							<input class="input__user input" type="text" placeholder="User">
-							<input class="input__pass input" type="password" placeholder="Password">
-							<button class="modal__content-form-button">Добавить</button>
-						</form>
-					</div>
-				</div>
-			</div>
+				{% endfor %}
 		</main>
 		<footer class="footer">
 			<div class="footer__container __container">
